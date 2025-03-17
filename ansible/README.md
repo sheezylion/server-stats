@@ -43,7 +43,7 @@ ssh-keygen
 
 2. Copy the public key to the worker node:
 ```
-ssh-copy-id root@<worker-node-ip>
+ssh-copy-id -f "-o identifyfile <location of pem file>" ubuntu@<ip-address>
 ```
 
 Enter the root password when prompted. Once done, the control node can connect without requiring a password.
@@ -51,7 +51,7 @@ Enter the root password when prompted. Once done, the control node can connect w
 3. To confirm connectivity, run:
 
 ```
-ssh root@<worker-node-ip>
+ssh ubuntu@<worker-node-ip>
 ```
 If successful, it should log in without asking for a password.
      
@@ -96,6 +96,113 @@ Ansible Roles → Organizing playbooks for better reusability and structure.
 
 Ansible Vault → Encrypting sensitive data (e.g., passwords, API keys) in playbooks.
 
+## Understanding Ansible Roles
+Ansible roles improve readability and modularity, making it easier to manage complex playbooks. Instead of writing long playbooks with many tasks, roles allow us to organize tasks into structured directories.
+
+For example, if we need to install Docker on multiple OS-managed nodes, the steps will vary for Ubuntu, CentOS, and RedHat. Instead of writing all these conditions in a single playbook, we create roles to handle each scenario separately.
+
+## Ways to Use Ansible Roles
+There are two main ways to use Ansible roles:
+
+1. Creating Your Own Roles
+2. Using Prebuilt Roles from Ansible Galaxy
 
 
-   
+## Creating Your Own Ansible Role
+To create a new role, run:
+
+```
+ansible-galaxy role init <role_name>
+```
+
+This will generate a folder structure like this:
+
+```
+install_docker/
+│── defaults/        # Stores default variables
+│── files/           # Stores files to copy (e.g., config files)
+│── handlers/        # Defines handlers for task dependencies
+│── meta/            # Metadata about the role
+│── tasks/           # Defines tasks (main.yaml)
+│── templates/       # Stores Jinja2 template files
+│── vars/            # Stores role-specific variables
+│── README.md        # Documentation for the role
+```
+
+## Explanation of Role Structure:
+- tasks/ → The main directory where we define tasks (like installing Docker).
+- files/ → Stores files we want to copy (e.g., index.html, docker-config.json).
+- vars/ vs defaults/ → Both store variables, but defaults have lower priority, meaning values in vars/ override those in defaults/.
+- handlers/ → Defines actions that should run after specific tasks (e.g., restarting a service after installation).
+
+
+## Example: Installing Docker Using Ansible Roles
+Step 1: Define Tasks (Inside tasks/main.yml)
+```
+---
+- name: Install Docker (Ubuntu)
+  apt:
+    name: docker.io
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install Docker (CentOS)
+  yum:
+    name: docker
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Start and Enable Docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+```
+
+Step 2: Use Role in a Playbook (playbook.yml)
+
+```
+---
+- hosts: all
+  become: true
+  roles:
+    - install_docker
+
+```
+
+Step 3: Run the Playbook
+
+```
+ansible-playbook -i inventory.ini playbook.yml
+
+```
+
+### Using Ansible Galaxy
+Ansible Galaxy is a repository of prebuilt roles that we can download instead of creating roles from scratch.
+
+To install a role from Galaxy, run:
+
+```
+ansible-galaxy install <role_name>
+
+```
+
+## Ansible Collections
+Ansible Collections allow us to connect to third-party services (e.g., AWS, Azure, Cisco) using APIs.
+
+For example, to manage AWS resources, we need Boto3, which is an AWS SDK for Python.
+
+Step 1: Install Boto3
+
+```
+pip install boto3
+```
+
+Step 2: Install aws collection
+
+```
+ansible-galaxy collection install amazon.aws
+```
+
+You can now create a playbook that would consite of task on the aws service you want to run.
+
