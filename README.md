@@ -93,6 +93,7 @@ This fetches detailed facts about each server, including OS version, CPU, memory
 
 ## Next Steps: Ansible Roles & Vaults
 Ansible Roles → Organizing playbooks for better reusability and structure.
+
 Ansible Vault → Encrypting sensitive data (e.g., passwords, API keys) in playbooks.
 
 
