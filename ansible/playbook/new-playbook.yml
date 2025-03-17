@@ -22,7 +22,7 @@
 
     - name: copy file
       copy: # Uses the copy module to deploy a web page to /var/www/html/.
-        src: /home/ansible/index.html
+        src: index.html
         dest: /var/www/html
         user: root
         group: root
