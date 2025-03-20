@@ -1,29 +1,39 @@
 # Ansible Overview & Basic Usage
+
 ### What is Ansible?
+
 Ansible is a configuration management tool used to manage both software and hardware across multiple servers. It allows you to automate tasks like software installation, updates, and system configurations.
 
 One key advantage of Ansible is that it is agentless, meaning only the control node requires Ansible installation, while the worker nodes (managed servers) do not need any additional software. Ansible runs on Python and uses SSH to communicate with worker nodes.
 
-
 ## Setting Up SSH Connection (Control Node to Worker Node)
+
 To manage worker nodes, Ansible connects via SSH. You can authenticate using either password-based login or passwordless authentication (recommended).
+
 ### Steps for Password-Based SSH Authentication:
+
 1. On the worker node, set a root password using:
+
    ```
    passwd
    ```
 
 2. Modify SSH configurations:
+
    - Open /etc/ssh/sshd_config.d/60-custom.conf (for newer systems) or /etc/ssh/sshd_config (for older systems).
    - Set the following values:
+
    ```
    PermitRootLogin yes
    PasswordAuthentication yes
    ```
+
    - Save and exit.
 
 3. Restart the SSH service:
+
    - For RHEL-based systems (RedHat, CentOS, Rocky Linux, etc):
+
      ```
      systemctl restart sshd
      ```
@@ -42,8 +52,9 @@ ssh-keygen
 ```
 
 2. Copy the public key to the worker node:
+
 ```
-ssh-copy-id -f "-o identifyfile <location of pem file>" ubuntu@<ip-address>
+ssh-copy-id -f "-o identityfile <location of pem file>" ubuntu@<ip-address>
 ```
 
 Enter the root password when prompted. Once done, the control node can connect without requiring a password.
@@ -53,10 +64,11 @@ Enter the root password when prompted. Once done, the control node can connect w
 ```
 ssh ubuntu@<worker-node-ip>
 ```
+
 If successful, it should log in without asking for a password.
-     
-   
+
 ## Testing Ansible Connection
+
 Once SSH is set up, test the connection using Ansible:
 
 ```
@@ -70,6 +82,7 @@ A successful connection will return:
 ```
 
 ## Ansible Ad-Hoc Commands vs Playbooks
+
 - Ad-Hoc Commands → Used for simple, one-time tasks. Example:
 
 ```
@@ -83,6 +96,7 @@ ansible-playbook -i inventory.ini playbook.yml
 ```
 
 ## Gathering System Information
+
 To check system details of worker nodes, use:
 
 ```
@@ -92,23 +106,26 @@ ansible all -i inventory.ini -m setup
 This fetches detailed facts about each server, including OS version, CPU, memory, and more.
 
 ## Next Steps: Ansible Roles & Vaults
+
 Ansible Roles → Organizing playbooks for better reusability and structure.
 
 Ansible Vault → Encrypting sensitive data (e.g., passwords, API keys) in playbooks.
 
 ## Understanding Ansible Roles
+
 Ansible roles improve readability and modularity, making it easier to manage complex playbooks. Instead of writing long playbooks with many tasks, roles allow us to organize tasks into structured directories.
 
 For example, if we need to install Docker on multiple OS-managed nodes, the steps will vary for Ubuntu, CentOS, and RedHat. Instead of writing all these conditions in a single playbook, we create roles to handle each scenario separately.
 
 ## Ways to Use Ansible Roles
+
 There are two main ways to use Ansible roles:
 
 1. Creating Your Own Roles
 2. Using Prebuilt Roles from Ansible Galaxy
 
-
 ## Creating Your Own Ansible Role
+
 To create a new role, run:
 
 ```
@@ -130,14 +147,16 @@ install_docker/
 ```
 
 ## Explanation of Role Structure:
+
 - tasks/ → The main directory where we define tasks (like installing Docker).
 - files/ → Stores files we want to copy (e.g., index.html, docker-config.json).
 - vars/ vs defaults/ → Both store variables, but defaults have lower priority, meaning values in vars/ override those in defaults/.
 - handlers/ → Defines actions that should run after specific tasks (e.g., restarting a service after installation).
 
-
 ## Example: Installing Docker Using Ansible Roles
+
 Step 1: Define Tasks (Inside tasks/main.yml)
+
 ```
 ---
 - name: Install Docker (Ubuntu)
@@ -178,6 +197,7 @@ ansible-playbook -i inventory.ini playbook.yml
 ```
 
 ### Using Ansible Galaxy
+
 Ansible Galaxy is a repository of prebuilt roles that we can download instead of creating roles from scratch.
 
 To install a role from Galaxy, run:
@@ -188,6 +208,7 @@ ansible-galaxy install <role_name>
 ```
 
 ## Ansible Collections
+
 Ansible Collections allow us to connect to third-party services (e.g., AWS, Azure, Cisco) using APIs.
 
 For example, to manage AWS resources, we need Boto3, which is an AWS SDK for Python.
@@ -205,4 +226,3 @@ ansible-galaxy collection install amazon.aws
 ```
 
 You can now create a playbook that would consite of task on the aws service you want to run.
-
