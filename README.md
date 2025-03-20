@@ -43,7 +43,7 @@ ssh-keygen
 
 2. Copy the public key to the worker node:
 ```
-ssh-copy-id root@<worker-node-ip>
+ssh-copy-id -f "-o identityfile <pathtokeypair>" ubuntu@<ip-address>
 ```
 
 Enter the root password when prompted. Once done, the control node can connect without requiring a password.
