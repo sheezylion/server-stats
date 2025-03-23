@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Checking OpenSSH and OpenSSL
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - openssh
+        - openssl
+      ignore_errors: yes
+
+    - name: Checking Docker Version
+      command: docker --version
+      register: output
+      ignore_errors: yes
+
+    - name: Debug Docker Output
+      ansible.builtin.debug:
+        var: output
+
+    - name: Install Docker if Not Present
+      apt:
+        name: docker.io
+        state: present
+      when: output.failed is defined and output.rc != 0
