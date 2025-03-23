@@ -228,4 +228,73 @@ ansible-galaxy collection init my_aws_collection
 
 This generates a folder structure similar to roles but designed for third-party integrations.
 
+## Ansible error handling
+By default, Ansible stops execution when it encounters an error. However, we can handle errors using ignore_errors: yes to allow the playbook to continue executing even if a task fails.
+
+### Example: Checking & Handling Errors for OpenSSH, OpenSSL, and Docker Installation
+Let's say we need to ensure that OpenSSH and OpenSSL are updated on all worker servers, then check if Docker is installed.
+
+Without Error Handling (Execution Stops on Failure)
+
+```
+- hosts: all
+  become: true
+  tasks:
+    - name: Checking OpenSSH and OpenSSL
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - openssh
+        - openssl
+
+    - name: Checking Docker Version
+      command: docker --version
+```
+
+- If OpenSSH or OpenSSL is already updated, the task will complete successfully.
+- However, if Docker is not installed, the second task will fail, and Ansible will stop execution.
+
+### With Error Handling (Execution Continues Even on Failure)
+
+```
+- hosts: all
+  become: true
+  tasks:
+    - name: Checking OpenSSH and OpenSSL
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - openssh
+        - openssl
+      ignore_errors: yes  # Ignore errors and continue execution
+
+    - name: Checking Docker Version
+      command: docker --version
+      register: output
+      ignore_errors: yes  # Ignore error if Docker is not installed
+
+    - name: Debug Docker Output
+      ansible.builtin.debug:
+        var: output
+
+    - name: Install Docker if Not Present
+      apt:
+        name: docker.io
+        state: present
+      when: output.failed is defined and output.rc != 0  # Install Docker only if it is missing
+```
+
+### Explanation:
+- The first task ensures OpenSSH and OpenSSL are updated.
+- If an error occurs, ignore_errors: yes ensures the playbook continues execution instead of stopping.
+- The second task checks if Docker is installed.
+- If Docker is not installed, the error is stored in output.
+- The third task prints the output to debug the error.
+- The final task installs Docker only if an error was detected (Docker is missing).
+
+This approach ensures a smooth playbook execution without unnecessary failures stopping the workflow.
+
+
    
