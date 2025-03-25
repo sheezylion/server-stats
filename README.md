@@ -120,11 +120,12 @@ Click Build Now and check the logs.
 
 You should see the Node.js version printed, meaning the pipeline ran successfully inside a Docker container! 
 
-### What’s Next?
-This is just Part 1 of the series. Next, we’ll:
-- Add GitHub integration to pull code.
-- Deploy an actual fashion eCommerce app using Jenkins.
-- Set up Webhooks for automatic builds.
+### Conclusion
+
+In this first part of our series on building a robust CI/CD pipeline on AWS with Jenkins and Docker agents, we've successfully set up Jenkins on an EC2 instance and integrated Docker to streamline our build processes. By leveraging Docker agents, we have optimized resource usage and reduced costs, setting a strong foundation for efficient CI/CD operations. We also created a simple pipeline to demonstrate the seamless execution of tasks within Docker containers. 
+
+In the upcoming parts, we will enhance our pipeline by integrating GitHub for code management, deploying a real-world application, and implementing webhooks for automated builds, further solidifying our CI/CD strategy. Stay tuned for more advanced configurations and practical applications!
+
 
 
 
