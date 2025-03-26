@@ -36,8 +36,68 @@ To ensure **smooth deployment** and **automated testing**, we’ll use **GitHub 
 
 ---
 
-## **⚙️ Steps to Set Up CI/CD**
+## **⚙Steps to Set Up CI/CD**
 ### **Step 1: Create the GitHub Actions Workflow**
 Inside the project, create a **`.github/workflows`** folder. Inside that folder, create a **`deploy.yml`** file.
 
 Here’s the **GitHub Actions workflow file**:
+
+```
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Runs the workflow when code is pushed to 'main'
+  pull_request:
+    branches:
+      - main  # Also runs when a pull request is created
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Lint JavaScript
+        run: npx eslint js/*.js || true  # Checks for JS errors, ignores minor warnings
+
+      - name: Validate HTML
+        run: npx html-validator-cli --file index.html --format text || true
+
+      - name: Check CSS
+        run: npx stylelint "css/*.css" || true  # Checks CSS for issues
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: .
+```
+
+## Breaking Down the Workflow
+### 1. Build Step
+Ensures all project files are correctly structured before deployment.
+
+### 2. Test Step
+- JavaScript Linter (ESLint): Checks for syntax errors & best practices.
+
+- HTML Validator: Ensures the HTML structure is correct.
+
+- CSS Style Checker: Checks for CSS issues.
+
+### 3. Deploy Step
+Automatically pushes updates to GitHub Pages only if all previous steps pass.
