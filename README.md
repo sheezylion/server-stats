@@ -1,6 +1,6 @@
 # Beyond the Terminal - Self-Motivation Landing Page 
 
-## ** Overview**
+## **Overview**
 This project is a **personal self-motivation landing page** aimed at guiding individuals on:
 - **Daily motivation practices** (prayer, meditation, self-reflection).
 - **Navigating life challenges** (overcoming self-doubt, finding purpose).
