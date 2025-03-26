@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beyond the Terminal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">Beyond the Terminal</div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Me</a></li>
+          <li class="dropdown">
+            <a href="#">Resources ▼</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#" onclick="openTab(event, 'daily-motivation')"
+                  >Daily Motivation</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="openTab(event, 'devops-transition')"
+                  >Transitioning into DevOps</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="openTab(event, 'navigating-life')"
+                  >Navigating Life</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="section">
+        <h2>Welcome to Beyond the Terminal</h2>
+        <p>My journey from fashion to DevOps, and everything in between.</p>
+      </section>
+
+      <section id="about" class="section">
+        <h2>About Me</h2>
+        <p>
+          <strong>Adesokan Segun Yusuf</strong> - A journey through fashion,
+          photography, and DevOps.
+        </p>
+        <p>
+          Passionate about transformation, growth, and helping others navigate
+          life’s uncertainties.
+        </p>
+      </section>
+
+      <section id="resources" class="section">
+        <h2>Resources</h2>
+        <div class="tabs">
+          <button class="tablinks" onclick="openTab(event, 'daily-motivation')">
+            Daily Motivation
+          </button>
+          <button
+            class="tablinks"
+            onclick="openTab(event, 'devops-transition')"
+          >
+            Transitioning into DevOps
+          </button>
+          <button class="tablinks" onclick="openTab(event, 'navigating-life')">
+            Navigating Life
+          </button>
+        </div>
+
+        <div id="daily-motivation" class="tabcontent">
+          <h3>Daily Motivation</h3>
+          <p>Start strong every morning:</p>
+          <ul>
+            <li>
+              🧘 **Meditation** -
+              <a
+                href="https://www.youtube.com/results?search_query=meditation+music"
+                target="_blank"
+                >Find Meditation Music</a
+              >
+            </li>
+            <li>
+              📖 **Morning Affirmations** - Speak positivity into your day.
+            </li>
+            <li>💡 **Journaling** - Write down goals and reflections.</li>
+          </ul>
+        </div>
+
+        <div id="devops-transition" class="tabcontent">
+          <h3>Transitioning into DevOps</h3>
+          <p>Resources to kickstart your journey:</p>
+          <ul>
+            <li>
+              🎥
+              <a
+                href="https://www.youtube.com/c/AbhishekVeeramalla"
+                target="_blank"
+                >DevOps Tutorials</a
+              >
+            </li>
+            <li>📚 **Learn Linux, Git, Docker, Kubernetes, AWS.**</li>
+          </ul>
+        </div>
+
+        <div id="navigating-life" class="tabcontent">
+          <h3>Navigating Life</h3>
+          <p>Life is not a race. Your time is coming.</p>
+          <p>Trust your process and stay consistent.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
