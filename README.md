@@ -61,17 +61,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Dependencies
-        run: npm install
-
       - name: Lint JavaScript
-        run: npx eslint js/*.js || true  # Checks for JS errors, ignores minor warnings
+        run: |
+          npx eslint js/*.js || true  # Checks for JS errors, but doesn't stop the workflow if errors exist
 
       - name: Validate HTML
-        run: npx html-validator-cli --file index.html --format text || true
+        run: |
+          npx html-validator-cli --file index.html --format text || true
 
       - name: Check CSS
-        run: npx stylelint "css/*.css" || true  # Checks CSS for issues
+        run: |
+          npx stylelint "css/*.css" || true  # Checks CSS for issues
 
   deploy:
     name: Deploy to GitHub Pages
@@ -86,6 +86,8 @@ jobs:
         with:
           branch: gh-pages
           folder: .
+
+     
 ```
 
 ## Breaking Down the Workflow
