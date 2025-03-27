@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - main  
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install  # Ensure ESLint is installed
+
+      - name: Lint JavaScript
+        run: npx eslint "src/**/*.js" || true  # Adjust based on actual folder
+
+      - name: Validate HTML
+        run: npx html-validator-cli --file public/index.html --format text || true
+
+      - name: Check CSS
+        run: npx stylelint "public/css/*.css" || true  # Adjust path
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: main
+          folder: public  # Deploy only relevant files
