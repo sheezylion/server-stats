@@ -1,4 +1,4 @@
-#Task Objective: Refactor a legacy or non-Dockerized app to work with Docker, handle persistent storage, and use secure environment variable injection.
+# Task Objective: Refactor a legacy or non-Dockerized app to work with Docker, handle persistent storage, and use secure environment variable injection.
 
 ## Project Overview:
 
