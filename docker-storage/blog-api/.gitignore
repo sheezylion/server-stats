@@ -1,1 +1,4 @@
 .env
+.dockerignore
+blog.db
+node_modules
