@@ -77,6 +77,6 @@ Used: 2.6G / 125G (3%)
 
 2. **Standard utilities: top, awk, ps, df, free**
 
-### Project Page
+### Project URL
 
-👉 [View on GitHub] : https://github.com/sheezylion/server-stats
+👉 [View project] : https://roadmap.sh/projects/server-stats
