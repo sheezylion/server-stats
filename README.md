@@ -76,3 +76,7 @@ Used: 2.6G / 125G (3%)
 1. **Linux environment (tested on Ubuntu, Debian, CentOS)**
 
 2. **Standard utilities: top, awk, ps, df, free**
+
+### Project Page
+
+👉 [View on GitHub] : https://github.com/sheezylion/server-stats
